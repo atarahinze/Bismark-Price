@@ -14,7 +14,8 @@ class AdminUserSeeder extends Seeder
             ['email' => 'admin@bismark.com'],
             [
                 'name' => 'Bismark Admin',
-                'password' => Hash::make('Admin@123456')
+                'password' => Hash::make('Admin@123456'),
+                'role' => 'admin'
             ]
         );
     }
