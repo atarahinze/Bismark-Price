@@ -6,16 +6,19 @@ services:
     container_name: bismark_app
     restart: unless-stopped
     environment:
-      NODE_ENV: production
+      NODE_ENV: development
       PORT: 3000
       DB_HOST: mysql
       DB_PORT: 3306
-      DB_NAME: bismark_price
-      DB_USER: bismark
-      DB_PASSWORD: root
-      SESSION_SECRET: change-this-secret
+      DB_NAME: ${DB_NAME:-bismark_price}
+      DB_USER: ${DB_USER:-bismark}
+      DB_PASSWORD: ${DB_PASSWORD:-bismark_dev_password}
+      SESSION_SECRET: ${SESSION_SECRET:-local-dev-change-me}
     ports:
       - "3000:3000"
+    volumes:
+      - ./:/app
+      - /app/node_modules
     depends_on:
       mysql:
         condition: service_healthy
@@ -27,19 +30,21 @@ services:
     container_name: bismark_mysql
     restart: unless-stopped
     environment:
-      MYSQL_DATABASE: bismark_price
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_USER: bismark
-      MYSQL_PASSWORD: root
+      MYSQL_DATABASE: ${DB_NAME:-bismark_price}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-bismark_root_dev_password}
+      MYSQL_USER: ${DB_USER:-bismark}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-bismark_dev_password}
     ports:
       - "3307:3306"
     volumes:
       - bismark_mysql_data:/var/lib/mysql
+      - ./database/init:/docker-entrypoint-initdb.d:ro
     healthcheck:
-      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root -proot --silent"]
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root -p$$MYSQL_ROOT_PASSWORD --silent"]
       interval: 5s
       timeout: 5s
-      retries: 20
+      retries: 30
+      start_period: 10s
     networks:
       - bismark
 
