@@ -2,24 +2,48 @@
 
 سیستم مدیریت و کنترل قیمت محصولات بیسمارک.
 
-## First Module
+## Technology Stack
+
+- Node.js 22+
+- Express 5
+- MySQL 8
+- Docker / Docker Compose
+- HTML/CSS/JavaScript
+
+## Current Module
 
 ### Admin Authentication
 
-- Secure admin login
-- Role based access control
-- Login activity logs
-- Password management
+- Admin login
+- Session-based authentication
+- Protected admin dashboard
+- Logout
+- MySQL-backed users
 
-## Planned Stack
+## Run with Docker
 
-- Laravel 11
-- MySQL
-- Tailwind CSS
-- Laravel Authentication
-- Role Permission Management
+```bash
+docker compose up --build
+```
 
-## Modules
+Application: `http://localhost:3000`
+
+Admin login: `http://localhost:3000/admin/login`
+
+Health check: `http://localhost:3000/health`
+
+## Development
+
+```bash
+npm install
+npm run dev
+```
+
+## Project Direction
+
+Laravel has been removed from the application. Node.js is now the backend runtime and Express is the web framework.
+
+Planned modules:
 
 - Product Price Management
 - Price History
